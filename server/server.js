@@ -8,6 +8,8 @@ const jobsRoutes = require("./routes/jobs");
 const applicationsRoutes = require("./routes/applications");
 const profileRoutes = require("./routes/profile");
 const adminRoutes = require("./routes/admin");
+const companiesRoutes = require("./routes/companies");
+const drivesRoutes = require("./routes/drives");
 
 const app = express();
 
@@ -21,6 +23,8 @@ app.use("/api/jobs", jobsRoutes);
 app.use("/api/applications", applicationsRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/companies", companiesRoutes);
+app.use("/api/drives", drivesRoutes);
 
 // Health check
 app.get("/", (_req, res) => {

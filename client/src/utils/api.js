@@ -1,27 +1,27 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://cpma.onrender.com/api',
+  baseURL: 'http://localhost:5000/api',
+  headers: { 'Content-Type': 'application/json' },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+// Add token from storage on init
+const token = localStorage.getItem('cpma_token');
+if (token) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
 
+// Response interceptor for auth errors
 api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    // Auto-logout on 401 Unauthorized
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login';
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401) {
+      localStorage.removeItem('cpma_token');
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login';
+      }
     }
-    return Promise.reject(error);
+    return Promise.reject(err);
   }
 );
 
