@@ -50,11 +50,10 @@ async function seed() {
 
   // ========== ADMIN ==========
   console.log("👤 Creating admin...");
-  const hashedPw = await bcrypt.hash("password123", 10);
   const admin = await User.create({
     name: "Dr. Rajesh Placement Officer",
     email: "admin@psgitar.edu",
-    password: hashedPw,
+    password: "password123",
     role: "admin",
   });
 
@@ -71,7 +70,7 @@ async function seed() {
   const recruiters = [];
   const companies = [];
   for (const rd of recruitersData) {
-    const rUser = await User.create({ name: rd.name, email: rd.email, password: hashedPw, role: "recruiter" });
+    const rUser = await User.create({ name: rd.name, email: rd.email, password: "password123", role: "recruiter" });
     const comp = await Company.create({
       name: rd.companyName, industry: rd.industry, size: rd.size,
       website: rd.website, city: rd.city,
@@ -99,7 +98,7 @@ async function seed() {
     const sUser = await User.create({
       name: STUDENT_NAMES[i],
       email: `student${i + 1}@psgitar.edu`,
-      password: hashedPw,
+      password: "password123",
       role: "student",
     });
 
