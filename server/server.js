@@ -29,16 +29,21 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
-app.use("/api/auth", authRoutes);
-app.use("/auth", authRoutes); // Fallback to fix 404s shown in user console
+// Routes - Mapped twice to support both /api/path and /path fallback (fixing frontend mismatches)
+const routes = [
+  { path: "/auth", router: authRoutes },
+  { path: "/jobs", router: jobsRoutes },
+  { path: "/applications", router: applicationsRoutes },
+  { path: "/profile", router: profileRoutes },
+  { path: "/admin", router: adminRoutes },
+  { path: "/companies", router: companiesRoutes },
+  { path: "/drives", router: drivesRoutes },
+];
 
-app.use("/api/jobs", jobsRoutes);
-app.use("/api/applications", applicationsRoutes);
-app.use("/api/profile", profileRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/companies", companiesRoutes);
-app.use("/api/drives", drivesRoutes);
+routes.forEach((route) => {
+  app.use(`/api${route.path}`, route.router);
+  app.use(route.path, route.router);
+});
 
 // Health check
 app.get("/", (_req, res) => {
