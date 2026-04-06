@@ -50,9 +50,13 @@ app.get("/", (_req, res) => {
   res.json({ message: "CPMS API is running", status: "online" });
 });
 
-app.get("/api/health", (_req, res) => {
+app.get("/api/status", (_req, res) => {
   res.json({ status: "healthy", timestamp: new Date().toISOString() });
 });
+
+// Alias for common health checks
+app.get("/health", (_req, res) => res.json({ status: "online" }));
+app.get("/api/health", (_req, res) => res.json({ status: "online" }));
 
 // Global Error Handler for parsing errors
 app.use((err, req, res, next) => {
